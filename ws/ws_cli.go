@@ -10,6 +10,8 @@ import (
 	"runtime/debug"
 	"sync"
 	"time"
+	"net/http"
+	"net/url"
 
 	. "github.com/du5/v5sdk_go/config"
 	. "github.com/du5/v5sdk_go/utils"
@@ -213,6 +215,11 @@ func (a *WsClient) Start() error {
 				close(done)
 			}()
 			var c *websocket.Conn
+			dial := websocket.DefaultDialer
+			if len(proxyUri) > 0 {
+				uri,_ := url.Parse(proxyUri)
+				dial.proxy = http.Proxy(uri)
+			}
 			c, _, err := websocket.DefaultDialer.Dial(a.WsEndPoint, nil)
 			if err != nil {
 				err = errors.New("dial error:" + err.Error())
