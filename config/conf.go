@@ -2,6 +2,8 @@ package config
 
 import "fmt"
 
+var proxyUri = ""
+
 type Env struct {
 	RestEndpoint string `yaml:"RestEndpoint"`
 	WsEndpoint   string `yaml:"WsEndpoint"`
